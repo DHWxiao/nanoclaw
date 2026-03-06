@@ -101,7 +101,7 @@ export async function run(_args: string[]): Promise<void> {
   const envFile = path.join(projectRoot, '.env');
   if (fs.existsSync(envFile)) {
     const envContent = fs.readFileSync(envFile, 'utf-8');
-    if (/^(CLAUDE_CODE_OAUTH_TOKEN|ANTHROPIC_API_KEY)=/m.test(envContent)) {
+    if (/^(CLAUDE_CODE_OAUTH_TOKEN|ANTHROPIC_API_KEY|ANTHROPIC_AUTH_TOKEN)=/m.test(envContent)) {
       credentials = 'configured';
     }
   }
@@ -112,6 +112,8 @@ export async function run(_args: string[]): Promise<void> {
     'SLACK_BOT_TOKEN',
     'SLACK_APP_TOKEN',
     'DISCORD_BOT_TOKEN',
+    'FEISHU_APP_ID',
+    'FEISHU_APP_SECRET',
   ]);
 
   const channelAuth: Record<string, string> = {};
@@ -134,6 +136,13 @@ export async function run(_args: string[]): Promise<void> {
   }
   if (process.env.DISCORD_BOT_TOKEN || envVars.DISCORD_BOT_TOKEN) {
     channelAuth.discord = 'configured';
+  }
+  // Feishu: check for App ID and Secret
+  if (
+    (process.env.FEISHU_APP_ID || envVars.FEISHU_APP_ID) &&
+    (process.env.FEISHU_APP_SECRET || envVars.FEISHU_APP_SECRET)
+  ) {
+    channelAuth.feishu = 'configured';
   }
 
   const configuredChannels = Object.keys(channelAuth);

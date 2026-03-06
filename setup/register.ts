@@ -34,7 +34,7 @@ function parseArgs(args: string[]): RegisterArgs {
     channel: 'whatsapp', // backward-compat: pre-refactor installs omit --channel
     requiresTrigger: true,
     isMain: false,
-    assistantName: 'Andy',
+    assistantName: 'Acai',
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -61,7 +61,7 @@ function parseArgs(args: string[]): RegisterArgs {
         result.isMain = true;
         break;
       case '--assistant-name':
-        result.assistantName = args[++i] || 'Andy';
+        result.assistantName = args[++i] || 'Acai';
         break;
     }
   }
@@ -142,9 +142,9 @@ export async function run(args: string[]): Promise<void> {
 
   // Update assistant name in CLAUDE.md files if different from default
   let nameUpdated = false;
-  if (parsed.assistantName !== 'Andy') {
+  if (parsed.assistantName !== 'Acai') {
     logger.info(
-      { from: 'Andy', to: parsed.assistantName },
+      { from: 'Acai', to: parsed.assistantName },
       'Updating assistant name',
     );
 
@@ -156,9 +156,9 @@ export async function run(args: string[]): Promise<void> {
     for (const mdFile of mdFiles) {
       if (fs.existsSync(mdFile)) {
         let content = fs.readFileSync(mdFile, 'utf-8');
-        content = content.replace(/^# Andy$/m, `# ${parsed.assistantName}`);
+        content = content.replace(/^# Acai$/m, `# ${parsed.assistantName}`);
         content = content.replace(
-          /You are Andy/g,
+          /You are Acai/g,
           `You are ${parsed.assistantName}`,
         );
         fs.writeFileSync(mdFile, content);
